@@ -18,8 +18,11 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 180, nullable: true)]
     private string $username;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
     private string $googleId;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
+    private string $facebookId;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $email;
@@ -88,6 +91,25 @@ class User implements UserInterface
     public function setGoogleId(string $googleId): self
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookId(): string
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param string $facebookId
+     * @return User
+     */
+    public function setFacebookId(string $facebookId): self
+    {
+        $this->facebookId = $facebookId;
 
         return $this;
     }

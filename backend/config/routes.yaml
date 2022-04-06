@@ -9,3 +9,7 @@ kernel:
 overblog_graphql_single_endpoint:
     resource: "@OverblogGraphQLBundle/Resources/config/routing/single.yaml"
     prefix: /graphql
+
+app_logout:
+    path: /logout
+    methods: GET

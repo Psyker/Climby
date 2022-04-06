@@ -45,6 +45,23 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function  getUserByEmailOrSocialId(string $email, string $socialId): ?User
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->where($qb->expr()->orX(
+            $qb->expr()->eq('u.email', ':email'),
+            $qb->expr()->eq('u.facebookId', ':socialId'),
+            $qb->expr()->eq('u.googleId', ':socialId')
+        ))
+            ->setParameters([
+                'socialId' => $socialId,
+                'email' => $email
+            ]);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

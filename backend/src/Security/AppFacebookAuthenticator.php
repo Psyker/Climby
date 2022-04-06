@@ -2,13 +2,14 @@
 
 namespace App\Security;
 
-use App\Entity\User;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\User; // your user entity
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
-use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\FacebookUser;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class AppGoogleAuthenticator extends OAuth2Authenticator
+class AppFacebookAuthenticator extends OAuth2Authenticator
 {
     private ClientRegistry $clientRegistry;
     private EntityManagerInterface $entityManager;
@@ -32,35 +33,36 @@ class AppGoogleAuthenticator extends OAuth2Authenticator
     public function supports(Request $request): ?bool
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
-        return $request->attributes->get('_route') === 'connect_google_check';
+        return $request->attributes->get('_route') === 'connect_facebook_check';
     }
 
     public function authenticate(Request $request): Passport
     {
-        $client = $this->clientRegistry->getClient('google_main');
+        $client = $this->clientRegistry->getClient('facebook_main');
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
             new UserBadge($accessToken->getToken(), function() use ($accessToken, $client) {
-                /** @var GoogleUser $googleUser */
-                $googleUser = $client->fetchUserFromToken($accessToken);
+                /** @var FacebookUser $facebookUser */
+                $facebookUser = $client->fetchUserFromToken($accessToken);
 
-                $email = $googleUser->getEmail();
+                $email = $facebookUser->getEmail();
 
-                // 1) have they logged in with Google before? Easy!
-                $existingUser = $this->entityManager->getRepository(User::class)->getUserByEmailOrSocialId($email, $googleUser->getId());
+                // 1) have they logged in with Facebook before? Easy!
+                $existingUser = $this->entityManager->getRepository(User::class)->getUserByEmailOrSocialId($email, $facebookUser->getId());
+
 
                 if ($existingUser) {
-                    $existingUser->setGoogleId($googleUser->getId());
+                    $existingUser->setFacebookId($facebookUser->getId());
                     $this->entityManager->flush();
 
                     return $existingUser;
                 }
 
                 $user = (new User())
-                    ->setUsername($googleUser->getFirstName())
-                    ->setEmail($googleUser->getEmail())
-                    ->setGoogleId($googleUser->getId());
+                    ->setUsername($facebookUser->getFirstName())
+                    ->setEmail($facebookUser->getEmail())
+                    ->setFacebookId($facebookUser->getId());
 
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
