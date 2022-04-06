@@ -1,0 +1,9 @@
+Query:
+    type: object
+    config:
+        name: Query
+        description: 'Root of the schema.'
+        fields:
+            viewer:
+                resolve: 'test'
+                type: 'String!'

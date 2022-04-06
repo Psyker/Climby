@@ -5,3 +5,7 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+overblog_graphql_single_endpoint:
+    resource: "@OverblogGraphQLBundle/Resources/config/routing/single.yaml"
+    prefix: /graphql
