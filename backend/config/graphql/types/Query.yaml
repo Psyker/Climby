@@ -5,5 +5,6 @@ Query:
         description: 'Root of the schema.'
         fields:
             viewer:
-                resolve: 'test'
-                type: 'String!'
+                resolve: "@=getUser()"
+                type: 'User!'
+                access: "@=hasRole('ROLE_USER')"
