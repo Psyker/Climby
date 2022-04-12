@@ -5,15 +5,17 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: 'uuid')]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
+    private Uuid $uuid;
 
     #[ORM\Column(type: 'string', length: 180, nullable: true)]
     private string $username;
@@ -30,9 +32,9 @@ class User implements UserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    public function getId(): ?int
+    public function getUuid(): ?Uuid
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getUsername(): ?string
