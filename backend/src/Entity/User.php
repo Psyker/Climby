@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -15,7 +17,7 @@ class User implements UserInterface
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
-    private Uuid $uuid;
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 180, nullable: true)]
     private string $username;
@@ -32,9 +34,17 @@ class User implements UserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    public function getUuid(): ?Uuid
+    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'members')]
+    private $sessions;
+
+    public function __construct()
     {
-        return $this->uuid;
+        $this->sessions = new ArrayCollection();
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
     }
 
     public function getUsername(): ?string
@@ -143,5 +153,32 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): self
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions[] = $session;
+            $session->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): self
+    {
+        if ($this->sessions->removeElement($session)) {
+            $session->removeMember($this);
+        }
+
+        return $this;
     }
 }

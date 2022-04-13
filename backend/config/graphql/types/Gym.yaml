@@ -1,0 +1,27 @@
+Gym: 
+    type: object
+    config:
+        description: "A gym."
+        name: Gym
+        fields:
+            id:
+                type: 'ID!'
+                description: 'The gym identifier.'
+            mpId:
+                type: 'ID!'
+                description: 'The mountain project gym id.'
+            slug: 
+                type: 'String!'
+                description: 'The gyms slug.'
+            address:
+                type: 'String!'
+                description: 'The gym address.'
+            phoneNumber:
+                type: 'String'
+                description: 'The gym phone number.'
+            siteUrl:
+                type: 'String'
+                description: 'The gym site URL.'
+            imageUrl:
+                type: 'String'
+                description: 'The gym photo.'

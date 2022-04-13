@@ -8,3 +8,15 @@ Query:
                 resolve: "@=getUser()"
                 type: 'User!'
                 access: "@=hasRole('ROLE_USER')"
+            gyms:
+                resolve: '@=q("App\\GraphQL\\Resolver\\GymResolver", args)'
+                type: '[Gym!]!'
+                description: 'Fetch all the gyms.'
+                args:
+                    term:
+                        type: 'String'
+                        description: 'The search term.'
+            sessions:
+                resolve: '@=q("App\\GraphQL\\Resolver\\SessionResolver")'
+                type: '[Session!]'
+                description: 'Fetch all the sessions.'

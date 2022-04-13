@@ -1,0 +1,40 @@
+Session:
+    type: object
+    config:
+        description: 'A climbing session.'
+        name: Session
+        fields:
+            id:
+                type: 'ID!'
+                description: 'The session identifier.'
+            name: 
+                type: 'String'
+                description: 'The name of the session.'
+            description:
+                type: 'String!'
+                description: 'The session description.'
+            grade:
+                type: 'String!'
+                description: 'European rating defining the difficulty.'
+            seats:
+                type: 'Int!'
+                description: 'The number of available seats for the current session.'
+            gym:
+                type: 'Gym'
+                description: 'The associated Gym.'
+            members:
+                access: "@=hasRole('ROLE_USER')"
+                type: '[User!]'
+                description: 'The members of the session.'
+            startAt:
+                type: 'DateTime!'
+                description: 'the start date of the session.'
+            endAt:
+                type: 'DateTime'
+                description: 'The end date of the session'
+            updatedAt:
+                type: 'DateTime'
+                description: 'the date of the last update.'
+            createdAt:
+                type: 'DateTime!'
+                description: 'The creation date of the session.'

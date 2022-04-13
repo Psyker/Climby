@@ -2,31 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Gym;
+use App\Entity\Session;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Gym|null find($id, $lockMode = null, $lockVersion = null)
- * @method Gym|null findOneBy(array $criteria, array $orderBy = null)
- * @method Gym[]    findAll()
- * @method Gym[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method findByName(mixed $term)
+ * @method Session|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Session|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Session[]    findAll()
+ * @method Session[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GymRepository extends ServiceEntityRepository
+class SessionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Gym::class);
+        parent::__construct($registry, Session::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Gym $entity, bool $flush = true): void
+    public function add(Session $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -38,7 +37,7 @@ class GymRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Gym $entity, bool $flush = true): void
+    public function remove(Session $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -47,15 +46,15 @@ class GymRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Gym[] Returns an array of Gym objects
+    //  * @return Session[] Returns an array of Session objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
+            ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -64,10 +63,10 @@ class GymRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Gym
+    public function findOneBySomeField($value): ?Session
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

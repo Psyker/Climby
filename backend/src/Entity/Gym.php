@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GymRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\Uid\Uuid;
@@ -15,7 +17,7 @@ class Gym
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
-    private Uuid $uuid;
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 500)]
     private string $name;
@@ -30,17 +32,25 @@ class Gym
     private string $address;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    private string $phone_number;
+    private ?string $phone_number;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $site_url;
+    private ?string $site_url;
 
     #[ORM\Column(type: 'string', length: 500, nullable: true)]
-    private string $image_url;
+    private ?string $image_url;
 
-    public function getUuid(): ?Uuid
+    #[ORM\OneToMany(mappedBy: 'gym', targetEntity: Session::class)]
+    private $sessions;
+
+    public function __construct()
     {
-        return $this->uuid;
+        $this->sessions = new ArrayCollection();
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -144,5 +154,35 @@ class Gym
             ->setSlug($gymData['slug'])
             ->setPhoneNumber($gymData['phone_number'])
             ->setSiteUrl($gymData['site_url']);
+    }
+
+    /**
+     * @return Collection<int, Session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): self
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions[] = $session;
+            $session->setGym($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): self
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getGym() === $this) {
+                $session->setGym(null);
+            }
+        }
+
+        return $this;
     }
 }

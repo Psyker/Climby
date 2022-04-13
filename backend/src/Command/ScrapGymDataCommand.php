@@ -19,14 +19,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ScrapGymDataCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
-    }
-
     public function __construct(private readonly MountainProjectCrawler $crawler, private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();
