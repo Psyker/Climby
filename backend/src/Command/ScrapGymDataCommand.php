@@ -34,6 +34,7 @@ class ScrapGymDataCommand extends Command
         foreach ($gymsData as $gymData) {
             $this->entityManager->persist(Gym::fromMPData($gymData));
         }
+        $io->info('Creating ' . \count($gymsData) . ' Gym entities.');
         $io->info('Flushing gyms into database.');
         try {
             $this->entityManager->flush();

@@ -1,0 +1,30 @@
+CreateSessionInput:
+    type: relay-mutation-input
+    config:
+        name: CreateSessionInput
+        description: 'Input type of CreateSessionMutation.'
+        fields:
+            name:
+                type: 'String!'
+                description: 'The name of the session.'
+            grade:
+                type: 'String!'
+                description: 'The grade required for the session.'
+            seats:
+                type: 'Int!'
+                description: 'The number of seats available.'
+            gymId:
+                type: 'ID'
+                description: 'The gym id.'
+            locationType:
+                type: 'String!'
+                description: 'The session is either indoor or outdoor'
+            startAt:
+                type: 'Datetime!'
+                description: 'The start date of the session.'
+            endAt:
+                type: 'Datetime'
+                description: 'The end date of the session.'
+            discipline:
+                type: 'String!'
+                description: 'The discipline of climbing.'

@@ -41,14 +41,14 @@ class Gym
     private ?string $image_url;
 
     #[ORM\OneToMany(mappedBy: 'gym', targetEntity: Session::class)]
-    private $sessions;
+    private Collection $sessions;
 
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
     }
 
-    public function getId(): ?Uuid
+    public function getId(): Uuid
     {
         return $this->id;
     }

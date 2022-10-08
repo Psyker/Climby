@@ -6,58 +6,68 @@ use App\Repository\SessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SessionRepository::class)]
 class Session
 {
+    public const LOCATION_TYPES = ['indoor', 'outdoor'];
+    public const CLIMBING_TYPES = ['traditional', 'bouldering', 'speed-climbing'];
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
-    private $id;
+    private Uuid $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
+    private string $description;
 
     #[ORM\Column(type: 'string', length: 4)]
-    private $grade;
+    private string $grade;
 
+    #[Assert\GreaterThan(0)]
     #[ORM\Column(type: 'integer')]
-    private $seats;
+    private int $seats;
 
     #[ORM\ManyToOne(targetEntity: Gym::class, inversedBy: 'sessions')]
-    private $gym;
+    private Gym $gym;
 
+    #[Assert\Choice(choices: Session::LOCATION_TYPES, message: 'Choose a valid location type.')]
     #[ORM\Column(type: 'string', length: 255)]
-    private $type;
+    private string $type;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'sessions')]
-    private $members;
+    private Collection $members;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $start_at;
+    private \DateTimeImmutable $start_at;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $end_at;
+    private ?\DateTimeImmutable $end_at;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $updated_at;
+    private ?\DateTimeImmutable $updated_at;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $created_at;
+    private \DateTimeImmutable $created_at;
 
+    #[Assert\Choice(choices: Session::CLIMBING_TYPES, message: 'Choose a valid discipline.')]
     #[ORM\Column(type: 'string', length: 255)]
-    private $discipline;
+    private string $discipline;
 
     public function __construct()
     {
         $this->members = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): UUid
     {
         return $this->id;
     }

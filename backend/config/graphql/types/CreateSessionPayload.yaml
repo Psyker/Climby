@@ -1,0 +1,7 @@
+CreateSessionPayload:
+    type: relay-mutation-payload
+    config:
+        fields:
+            session:
+                type: 'Session'
+                description: 'The created session.'
