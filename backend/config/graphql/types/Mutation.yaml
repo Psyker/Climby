@@ -1,0 +1,10 @@
+Mutation:
+    type: object
+    config: 
+        fields:
+            createSession:
+                builder: "Relay::Mutation"
+                builderConfig:
+                    inputType: CreateSessionInput
+                    payloadType: CreateSessionPayload
+                    mutateAndGetPayload: "@=m('create_session', args)"

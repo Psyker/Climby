@@ -38,3 +38,6 @@ Session:
             createdAt:
                 type: 'DateTime!'
                 description: 'The creation date of the session.'
+            public:
+                type: 'Boolean!'
+                description: 'The visibility of the session.'

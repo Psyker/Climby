@@ -10,6 +10,9 @@ Gym:
             mpId:
                 type: 'ID!'
                 description: 'The mountain project gym id.'
+            name:
+                type: 'String!'
+                description: "The gym's name"
             slug: 
                 type: 'String!'
                 description: 'The gyms slug.'

@@ -50,14 +50,12 @@ class MountainProjectCrawler
             $siteUrl = $crawler->filter(".gym-info div:nth-of-type(1)")->children('a')->attr('href');
             $phoneNumber = $crawler->filter(".gym-info div:nth-of-type(2)")->innerText();
             $address = $crawler->filter(".gym-info div:nth-of-type(3)")->children('a')->innerText();
-            var_dump($address);
         }
 
         if ($divCount === 2) {
             $siteUrl = $crawler->filter(".gym-info div:nth-of-type(1)")->children('a')->attr('href');
             $phoneNumber = null;
             $address = $crawler->filter(".gym-info div:nth-of-type(2)")->children('a')->innerText();
-            var_dump($address);
         }
 
         return [

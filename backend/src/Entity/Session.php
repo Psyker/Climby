@@ -62,9 +62,17 @@ class Session
     #[ORM\Column(type: 'string', length: 255)]
     private string $discipline;
 
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => true])]
+    private bool $public;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $author;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): UUid
@@ -224,6 +232,30 @@ class Session
     public function setDiscipline(string $discipline): self
     {
         $this->discipline = $discipline;
+
+        return $this;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->public;
+    }
+
+    public function setPublic(bool $public): Session
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

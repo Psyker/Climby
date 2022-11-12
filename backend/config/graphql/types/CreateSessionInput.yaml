@@ -7,6 +7,9 @@ CreateSessionInput:
             name:
                 type: 'String!'
                 description: 'The name of the session.'
+            description:
+                type: 'String'
+                description: 'The description of the session'
             grade:
                 type: 'String!'
                 description: 'The grade required for the session.'
@@ -20,11 +23,15 @@ CreateSessionInput:
                 type: 'String!'
                 description: 'The session is either indoor or outdoor'
             startAt:
-                type: 'Datetime!'
+                type: 'DateTime!'
                 description: 'The start date of the session.'
             endAt:
-                type: 'Datetime'
+                type: 'DateTime'
                 description: 'The end date of the session.'
             discipline:
                 type: 'String!'
                 description: 'The discipline of climbing.'
+            public:
+                type: 'Boolean'
+                defaultValue: true
+                description: "The visibility of the session."
