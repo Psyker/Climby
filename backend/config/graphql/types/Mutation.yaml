@@ -5,6 +5,14 @@ Mutation:
             createSession:
                 builder: "Relay::Mutation"
                 builderConfig:
+                    access: '@=hasRole("ROLE_USER")'
                     inputType: CreateSessionInput
                     payloadType: CreateSessionPayload
-                    mutateAndGetPayload: "@=m('create_session', args)"
+                    mutateAndGetPayload: "@=m('create_session', args, getUser())"
+            joinSession:
+                access: '@=hasRole("ROLE_USER")'
+                builder: "Relay::Mutation"
+                builderConfig:
+                    inputType: JoinSessionInput
+                    payloadType: JoinSessionPayload
+                    mutateAndGetPayload: "@=m('join_session', args, getUser())"

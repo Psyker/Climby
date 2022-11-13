@@ -35,7 +35,7 @@ class User implements UserInterface
     private array $roles = [];
 
     #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'members')]
-    private $sessions;
+    private Collection $sessions;
 
     public function __construct()
     {

@@ -10,6 +10,7 @@ use GraphQL\Error\UserError;
 use Overblog\GraphQLBundle\Definition\Argument;
 use Overblog\GraphQLBundle\Definition\Resolver\AliasedInterface;
 use Overblog\GraphQLBundle\Definition\Resolver\MutationInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CreateSessionMutation implements MutationInterface, AliasedInterface
 {
@@ -19,8 +20,9 @@ class CreateSessionMutation implements MutationInterface, AliasedInterface
         private readonly EntityManagerInterface $entityManager
     ) {}
 
-    public function createSession(Argument $args): array
+    public function createSession(Argument $args, mixed $user): array
     {
+        dump($args, $user);
         $inputArgs = $args->getArrayCopy()['input'];
         $gym = $this->gymRepository->find($inputArgs['gymId']);
 
@@ -29,7 +31,9 @@ class CreateSessionMutation implements MutationInterface, AliasedInterface
         }
 
         $session = new Session();
-        $session->setName($inputArgs['name'])
+        $session
+            ->setAuthor($user)
+            ->setName($inputArgs['name'])
             ->setStartAt($inputArgs['startAt'])
             ->setDescription($inputArgs['description'])
             ->setEndAt($inputArgs['endAt'])
@@ -39,6 +43,9 @@ class CreateSessionMutation implements MutationInterface, AliasedInterface
             ->setGym($gym)
             ->setGrade($inputArgs['grade'])
             ->setPublic($inputArgs['public']);
+
+        // Adding the author.
+        $session->addMember($user);
 
         $this->entityManager->persist($session);
         $this->entityManager->flush();

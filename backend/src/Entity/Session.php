@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// "SESSION" is a reserved work in SQL99 & SQL92
 #[ORM\Entity(repositoryClass: SessionRepository::class)]
 class Session
 {
@@ -44,6 +45,7 @@ class Session
     private string $type;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'sessions')]
+    #[ORM\JoinTable(name: 'session_member')]
     private Collection $members;
 
     #[ORM\Column(type: 'datetime_immutable')]

@@ -1,0 +1,7 @@
+JoinSessionPayload:
+    type: relay-mutation-payload
+    config:
+        fields:
+            session:
+                type: 'Session'
+                description: 'The joined session.'

@@ -30,19 +30,19 @@ final class Version20220413010740 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN session.end_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN session.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN session.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE "session_user" (session_id UUID NOT NULL, user_id UUID NOT NULL, PRIMARY KEY(session_id, user_id))');
-        $this->addSql('CREATE INDEX IDX_4BE2D663613FECDF ON "session_user" (session_id)');
-        $this->addSql('CREATE INDEX IDX_4BE2D663A76ED395 ON "session_user" (user_id)');
-        $this->addSql('COMMENT ON COLUMN "session_user".session_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('COMMENT ON COLUMN "session_user".user_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE "session_member" (session_id UUID NOT NULL, user_id UUID NOT NULL, PRIMARY KEY(session_id, user_id))');
+        $this->addSql('CREATE INDEX IDX_4BE2D663613FECDF ON "session_member" (session_id)');
+        $this->addSql('CREATE INDEX IDX_4BE2D663A76ED395 ON "session_member" (user_id)');
+        $this->addSql('COMMENT ON COLUMN "session_member".session_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN "session_member".user_id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE "user" (id UUID NOT NULL, username VARCHAR(180) DEFAULT NULL, google_id VARCHAR(255) DEFAULT NULL, facebook_id VARCHAR(255) DEFAULT NULL, email VARCHAR(255) NOT NULL, roles JSON NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64976F5C865 ON "user" (google_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D6499BE8FD98 ON "user" (facebook_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('COMMENT ON COLUMN "user".id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE session ADD CONSTRAINT FK_D044D5D4BD2F03 FOREIGN KEY (gym_id) REFERENCES gym (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE "session_user" ADD CONSTRAINT FK_4BE2D663613FECDF FOREIGN KEY (session_id) REFERENCES session (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE "session_user" ADD CONSTRAINT FK_4BE2D663A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE "session_member" ADD CONSTRAINT FK_4BE2D663613FECDF FOREIGN KEY (session_id) REFERENCES session (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE "session_member" ADD CONSTRAINT FK_4BE2D663A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -50,11 +50,11 @@ final class Version20220413010740 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE session DROP CONSTRAINT FK_D044D5D4BD2F03');
-        $this->addSql('ALTER TABLE "session_user" DROP CONSTRAINT FK_4BE2D663613FECDF');
-        $this->addSql('ALTER TABLE "session_user" DROP CONSTRAINT FK_4BE2D663A76ED395');
+        $this->addSql('ALTER TABLE "session_member" DROP CONSTRAINT FK_4BE2D663613FECDF');
+        $this->addSql('ALTER TABLE "session_member" DROP CONSTRAINT FK_4BE2D663A76ED395');
         $this->addSql('DROP TABLE gym');
         $this->addSql('DROP TABLE session');
-        $this->addSql('DROP TABLE "session_user"');
+        $this->addSql('DROP TABLE "session_member"');
         $this->addSql('DROP TABLE "user"');
     }
 }

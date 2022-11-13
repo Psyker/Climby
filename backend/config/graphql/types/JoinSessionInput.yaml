@@ -1,0 +1,10 @@
+JoinSessionInput:
+    type: relay-mutation-input
+    config:
+        name: JoinSessionInput
+        description: 'Input type of JoinSessionMutation.'
+        fields:
+            sessionId:
+                type: 'ID!'
+                description: 'The session id.'
+            
